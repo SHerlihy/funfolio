@@ -3,7 +3,7 @@ kaboom({
   fullscreen: true,
   scale: 1,
   debug: true,
-  clearColor: [0, 0, 0, 1],
+  clearColor: [0.5, 0.8, 1, 1],
 });
 
 loadRoot("./sprites/");
@@ -124,7 +124,6 @@ scene("game", ({ level, score }) => {
     solid(),
     big(),
     pos(30, 0),
-    body(true),
     origin("bot"),
   ]);
 
@@ -153,11 +152,11 @@ scene("game", ({ level, score }) => {
   });
 
   player.collides("danger", (d) => {
-    if (isJumping) {
-      destroy(d);
-    } else {
-      go("lose", { score: score });
-    }
+    // if (isJumping) {
+    //   destroy(d);
+    // } else {
+    //   go("lose", { score: score });
+    // }
   });
 
   player.collides("pipe", () => {
@@ -182,35 +181,41 @@ scene("game", ({ level, score }) => {
   keyDown("right", () => {
     player.move(MOVE_SPEED, 0);
   });
-  keyDown("space", () => {
-    if (player.grounded()) {
-      isJumping = true;
-      player.jump(CURRENT_JUMP_FORCE);
-    }
+  keyDown("up", () => {
+    player.move(0, -MOVE_SPEED);
   });
+  keyDown("down", () => {
+    player.move(0, MOVE_SPEED);
+  });
+  // keyDown("space", () => {
+  //   if (player.grounded()) {
+  //     isJumping = true;
+  //     player.jump(CURRENT_JUMP_FORCE);
+  //   }
+  // });
 
-  player.action(() => {
-    if (player.grounded()) {
-      isJumping = false;
-    }
-  });
+  // player.action(() => {
+  //   if (player.grounded()) {
+  //     isJumping = false;
+  //   }
+  // });
 
   player.action(() => {
     camPos(player.pos);
-    if (player.pos.y >= FALL_DEATH) {
-      go("lose", { score: scoreLabel.value });
-    }
+    // if (player.pos.y >= FALL_DEATH) {
+    //   go("lose", { score: scoreLabel.value });
+    // }
   });
 
-  action("mushroom", (m) => {
-    m.move(10, 0);
-  });
+  // action("mushroom", (m) => {
+  //   m.move(10, 0);
+  // });
 
-  const ENEMY_SPEED = 20;
+  // const ENEMY_SPEED = 20;
 
-  action("danger", (d) => {
-    d.move(-ENEMY_SPEED, 0);
-  });
+  // action("danger", (d) => {
+  //   d.move(-ENEMY_SPEED, 0);
+  // });
 });
 
 scene("lose", ({ score }) => {
